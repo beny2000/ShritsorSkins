@@ -1,7 +1,3 @@
-#Shirts or Skins primary FUnction Implementation
-#Developers : Ben and Yasha
-#Date Created 12/1/2017
-
 class Player():
   def __init__(self,names):
     self.names = names
@@ -72,8 +68,8 @@ class Player():
     
     team1 = f_team[len(f_team)//2:]
     team2 = f_team[:len(f_team)//2]
-    print(""" Shrits  | Skins
-    %s      |  %s      """ %(team1, team2))
+    print(""" Shrits             |            Skins
+%s      |  %s      """ %(team1, team2))
     
       
 obj = Player({'Ben':4,'Yasha':3, 'Josh':2, 'Max':1})
@@ -82,13 +78,8 @@ obj.team_maker()
 ben, yasha vs josh,max
 ben, max vs yasha,josh
 ben josh vs yasha,max
-
 ben,yasha,josh,max
 yasha,josh,max,ben
 josh,max,ben,yasha
 max,ben,yasha,josh
 '''
-
-
-
-
