@@ -73,7 +73,7 @@ class Player():
     team1 = f_team[len(f_team)//2:]
     team2 = f_team[:len(f_team)//2]
     print(""" Shrits  | Skins
-              %s      |  %s      """ %(team1, team2))
+    %s      |  %s      """ %(team1, team2))
     
       
 obj = Player({'Ben':4,'Yasha':3, 'Josh':2, 'Max':1})
