@@ -63,16 +63,9 @@ class Player():
     else:
       
       
-      lowest_rating = 10
-      for i in self.names:
-        if self.names[i]< lowest_rating:
-          lowest_rating = self.names[i]
-          worst_player = i
-          
+      self.names.update({'notaguy':0})
       lst_names = list(self.names)    
-      lst_names.remove(worst_player)
-      
-     
+
       for i in range(1):
           els = [list(x) for x in itertools.combinations(lst_names, int(len(lst_names)/2))]
           combs.append(els)
@@ -91,22 +84,10 @@ class Player():
           most_fair = self.fairness_rating
           most_fair_game = one_game
           
-      
+      most_fair_game.remove('notaguy')
       team1 = most_fair_game[len(most_fair_game)//2:]
       team2 = most_fair_game[:len(most_fair_game)//2]
       
-      
-      if self.team1_skill < self.team2_skill:
-        team1.append(worst_player)
-      elif self.team2_skill > self.team1_skill:
-        team2.append(worst_player)
-      else:
-        ran_team = random.choice(['team1','team2'])
-        if ran_team == 'team1':
-          team1.append(worst_player)
-        else:
-          team2.append(worst_player)
-          
       print(team1,'vs', team2)
       # return (team1,'vs', team2)
       
