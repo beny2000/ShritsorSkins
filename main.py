@@ -1,85 +1,114 @@
+import itertools
+import math
+import random
+
 class Player():
   def __init__(self,names):
     self.names = names
+    self.fairness_rating = 100
+    self.team2_skill = 0
+    self.team1_skill = 0 
     
-  def team_maker(self):
+  def __fairness(self,teams):
+    team1 = teams[len(teams)//2:]
+    team2 = teams[:len(teams)//2]
+    self.team2_skill = 0
+    self.team1_skill = 0 
+       
+    for i in range(len(team1)):
+      self.team1_skill += self.names[team1[i]]
+      
+    for i in range(len(team2)):
+      self.team2_skill += self.names[team2[i]]
     
-    def fairness(teams):
-      team1 = teams[len(teams)//2:]
-      team2 = teams[:len(teams)//2]
-      team2_skill = 0
-      team1_skill = 0    
-      for i in range(len(team1)):
-        team1_skill += self.names[team1[i]]
-      team1_skill /= len(team1)
-      for i in range(len(team2)):
-        team2_skill += self.names[team2[i]]
-      team2_skill /= len(team2)
       
-      fairness_rating = abs(team1_skill-team2_skill)
-      return fairness_rating
+    self.fairness_rating = abs(self.team1_skill - self.team2_skill)
+    return self.fairness_rating
       
-    ctr = len(self.names)
-    ctr2 = 0 
-    f=100
-    #f_team =[]
-    names= []
-    for i in self.names:
-      names.append(i)
-      
-      ctr2 = -1
-    while ctr2 != len(names):
-      ctr = ctr2+1
-      teams = []
-      loop_ctr = 0
-      while loop_ctr != len(names):
-        if ctr >= len(names):
-          ctr=0
-        teams.append(names[ctr])
-        ctr+=1
-        loop_ctr +=1
-        if len(teams)==len(names):
-          print(teams)
-          fair = fairness(teams)
+  def team_maker(self, stats = 0):
+    combs = []
+    all_games = []
+    most_fair = 100
+    
+    
+    #max_game_combs = (int(math.factorial(len(self.names)) / math.factorial(int(len(self.names)/2))**2))/2
+    if len(self.names)%2==0:
+      for i in range(1):
+          els = [list(x) for x in itertools.combinations(self.names, int(len(self.names)/2))]
+          combs.append(els)
           
-          if fair < f:
-            f = fair
-            f_team = teams
-            
-      ctr2+=1
+          
+      for i in range(int(len(combs[0])/2)):
+        game = combs[0][i] + combs[0][(len(combs[0])-1)-i]
+        all_games.append(game)
       
-    teams = []
-    for i in range(len(names)):
-      if i % 2 != 0:
-        teams.append(names[i])
+      
+      for one_game in all_games:
         
-    for i in range(len(names)):
-      if i % 2 == 0:
-        teams.append(names[i])  
-    print(teams)
-    fair = fairness(teams)
-    if fair < f:
-      f = fair
-      f_team = teams
+        self.fairness_rating = self.__fairness(one_game)
+        
+        if self.fairness_rating < most_fair :
+          most_fair = self.fairness_rating
+          most_fair_game = one_game
+          
+        
+          
+
+      team1 = most_fair_game[len(most_fair_game)//2:]
+      team2 = most_fair_game[:len(most_fair_game)//2]
       
-    print('')
-    print(f_team)
-    print(f)
-    
-    team1 = f_team[len(f_team)//2:]
-    team2 = f_team[:len(f_team)//2]
-    print(""" Shrits             |            Skins
-%s      |  %s      """ %(team1, team2))
-    
+      print(team1,'vs', team2)
+      # return (team1,'vs', team2)
       
-obj = Player({'Ben':4,'Yasha':3, 'Josh':2, 'Max':1})
+    else:
+      
+      
+      lowest_rating = 10
+      for i in self.names:
+        if self.names[i]< lowest_rating:
+          lowest_rating = self.names[i]
+          worst_player = i
+          
+      lst_names = list(self.names)    
+      lst_names.remove(worst_player)
+      
+     
+      for i in range(1):
+          els = [list(x) for x in itertools.combinations(lst_names, int(len(lst_names)/2))]
+          combs.append(els)
+          #print(els)
+          
+      for i in range(int(len(combs[0])/2)):
+        game = combs[0][i] + combs[0][(len(combs[0])-1)-i]
+        all_games.append(game)
+     
+      
+      for one_game in all_games:
+  
+        self.fairness_rating = self.__fairness(one_game)
+  
+        if self.fairness_rating < most_fair :
+          most_fair = self.fairness_rating
+          most_fair_game = one_game
+          
+      
+      team1 = most_fair_game[len(most_fair_game)//2:]
+      team2 = most_fair_game[:len(most_fair_game)//2]
+      
+      
+      if self.team1_skill < self.team2_skill:
+        team1.append(worst_player)
+      elif self.team2_skill > self.team1_skill:
+        team2.append(worst_player)
+      else:
+        ran_team = random.choice(['team1','team2'])
+        if ran_team == 'team1':
+          team1.append(worst_player)
+        else:
+          team2.append(worst_player)
+          
+      print(team1,'vs', team2)
+      # return (team1,'vs', team2)
+      
+obj = Player({'Noah':5,'Ben':4,'Yasha':3, 'Josh':2, 'Max':1})
 obj.team_maker()
-'''
-ben, yasha vs josh,max
-ben, max vs yasha,josh
-ben josh vs yasha,max
-ben,yasha,josh,max
-yasha,josh,max,ben
-josh,max,ben,yasha
-max,ben,yasha,josh
-'''
