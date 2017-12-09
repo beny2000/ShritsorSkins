@@ -66,17 +66,16 @@ class Player():
       self.names.update({'notaguy':0})
       most_fair_game = self.__combo_maker()  
       
-      most_fair_game.remove('notaguy')
-      
       team1 = most_fair_game[math.ceil(len(most_fair_game)/2):]
       team2 = most_fair_game[:math.ceil(len(most_fair_game)/2)]
+      
+      if 'notaguy' in team1:
+        team1.remove('notaguy')
+      else:
+        team2.remove('notaguy')
       
       print(team1,'vs', team2)
       # return (team1,'vs', team2)
       
 obj = Player({'Noah':5, 'Ben':4,'Yasha':3, 'Josh':2, 'Max':1})
 obj.team_maker()
-'''
-[1,2,|3,4,5] = len 5/2 = 2.5 =2
-[1,2,3,|4,5,6] = len 6/2 = 3
-[1,2,3|,4,5] = len ceil(3)
