@@ -76,3 +76,7 @@ class Player():
       
 obj = Player({'Noah':5, 'Ben':4,'Yasha':3, 'Josh':2, 'Max':1})
 obj.team_maker()
+'''
+[1,2,|3,4,5] = len 5/2 = 2.5 =2
+[1,2,3,|4,5,6] = len 6/2 = 3
+[1,2,3|,4,5] = len ceil(3)
