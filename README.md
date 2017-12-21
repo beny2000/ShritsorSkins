@@ -1,2 +1,2 @@
 # ShritsorSkins
-Repo for fille assoited with shrits or skins app by yahsa and ben
+Repo for file associated with Shirts or Skins app by Yasha Bershtadt and Ben Morgenstern
