@@ -85,5 +85,5 @@ class Players():
 
 
 #Make an Input box for player input
-obj = Players({'ben':1,'max':2,'neb':3,'yasha':4, 'Name':'Skill'})
-obj.team_maker()
+#obj = Players({'Name':0,'Name':0,'Name':0,'Name':0, 'Name':'Skill'})
+#print(obj.team_maker())
