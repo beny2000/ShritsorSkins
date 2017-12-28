@@ -7,8 +7,6 @@ import itertools
 import math
 
 class Players():
-    
-    
 
     def __init__(self,names):
         self.names = names
@@ -57,33 +55,24 @@ class Players():
     
     def team_maker(self):
         game = []
-        #max_game_combs = (int(math.factorial(len(self.names)) / math.factorial(int(len(self.names)/2))**2))/2
-        if 'Name' in self.names.keys():
+        most_fair_game = self.__combo_maker()
     
-            del self.names['Name']  
-            most_fair_game = self.__combo_maker()
-    
-            team1 = most_fair_game[len(most_fair_game)//2:]
-            team2 = most_fair_game[:len(most_fair_game)//2]
-
-            #print(team1,'vs', team2)
-          # return (team1,'vs', team2)
-    
-        else:
-    
-          #self.names.remove({'Name':'Skill'})
-          most_fair_game = self.__combo_maker()
-    
-          team1 = most_fair_game[len(most_fair_game)//2:]
-          team2 = most_fair_game[:len(most_fair_game)//2]
-            
+        team1 = most_fair_game[len(most_fair_game)//2:]
+        team2 = most_fair_game[:len(most_fair_game)//2]
+        '''    
+        if 'Name' in team1:
+            team1.remove('Name')    
+        elif 'Name' in team2:
+            team2.remove('Name')
+        '''    
         game.append(team1)
-        game.append(team2)  
+        game.append(team2) 
+         
         return game 
           #print(team1,'vs', team2)
           # return (team1,'vs', team2)
 
 
 #Make an Input box for player input
-#obj = Players({'Name':0,'Name':0,'Name':0,'Name':0, 'Name':'Skill'})
+#obj = Players({'Ben': 2, 'Name': 0, 'Noah': 4, 'Yasha': 3, 'Max': 1, 'Josh': 5})
 #print(obj.team_maker())
