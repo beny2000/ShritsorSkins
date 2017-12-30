@@ -1,3 +1,0 @@
-title = 'Shirts or Skins'
-author = 'Ben'
-orientation = 'portrait'
