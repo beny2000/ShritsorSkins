@@ -6,6 +6,7 @@ from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from algorthim import Players
@@ -31,23 +32,23 @@ class MainScreen(Screen):
         super(MainScreen, self).__init__(**kwargs)
         self.players_dick = {}
         self.game_list = []
-        
+        self.current_page = None
         self.input_page()
         
     def input_page(self,*args):
         self.input_page_layout = BoxLayout(orientation= 'vertical')
-        
+        self.current_page = 'input'
         self.input_layout = GridLayout(cols=5, size_hint_y=None)
         self.input_scroll = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
-        self.txt_input1 = TextInput(text='Name', size_hint=(1, None),multiline=False)
+        self.txt_input1 = TextInput(text='', size_hint=(1, None),multiline=False)
         self.input_layout.add_widget(self.txt_input1)
-        self.txt_input2 = TextInput(text='0', size_hint=(1, None),multiline=False)
+        self.txt_input2 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
         self.input_layout.add_widget(self.txt_input2)
         self.label_1 = Label(text='', size_hint=(0.2, None))
         self.input_layout.add_widget(self.label_1)
-        self.txt_input3 = TextInput(text='Name', size_hint=(1, None),multiline=False)
+        self.txt_input3 = TextInput(text='', size_hint=(1, None),multiline=False)
         self.input_layout.add_widget(self.txt_input3)
-        self.txt_input4 = TextInput(text='0', size_hint=(1, None),multiline=False)
+        self.txt_input4 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
         self.input_layout.add_widget(self.txt_input4)
         self.input_layout.bind(minimum_height=self.input_layout.setter('height'))
         self.input_scroll.add_widget(self.input_layout)
@@ -67,50 +68,91 @@ class MainScreen(Screen):
         btn_add_new_players.bind(on_press=self.update_dick)
         btn_view_teams.bind(on_press=self.make_teams)
         btn_new_teams.bind(on_press=self.new_teams)
-        btn_new_teams.bind(on_press=self.input_page)
         btn_help.bind(on_press = self.to_help)
         self.btn_layout.add_widget(btn_add_new_players)
         self.btn_layout.add_widget(btn_view_teams)
         self.btn_layout.add_widget(btn_new_teams)
         self.btn_layout.add_widget(btn_help)
         
-        
     def to_help(self, *args):
         self.manager.current = 'help'
+        self.current_page = 'help'
 
     def new_players(self,*args):
-        self.txt_input1 = TextInput(text='Name', size_hint=(1, None),multiline=False)
-        self.input_layout.add_widget(self.txt_input1)
-        self.txt_input2 = TextInput(text='0', size_hint=(1, None),multiline=False)
-        self.input_layout.add_widget(self.txt_input2)
-        self.label_1 = Label(text='', size_hint=(1, None))
-        self.input_layout.add_widget(self.label_1)
-        self.txt_input3 = TextInput(text='Name', size_hint=(1, None),multiline=False)
-        self.input_layout.add_widget(self.txt_input3)
-        self.txt_input4 = TextInput(text='0', size_hint=(1, None),multiline=False)
-        self.input_layout.add_widget(self.txt_input4)
+        popup_btn = Button(text="Error not able add more players \n\n Click anywhere to close")
+        popup = Popup(title='Error', content=popup_btn)
+        popup_btn.bind(on_press= popup.dismiss)
+            
+        for i in self.players_dick.values():
+            if i == '':
+                popup.open()
+                return -1
+        for i in self.players_dick.keys():
+            if i == '':
+                popup.open()
+                del self.players_dick[i]
+                return -1
+        else:
+            self.txt_input1 = TextInput(text='', size_hint=(1, None),multiline=False)
+            self.input_layout.add_widget(self.txt_input1)
+            self.txt_input2 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
+            self.input_layout.add_widget(self.txt_input2)
+            self.label_1 = Label(text='', size_hint=(1, None))
+            self.input_layout.add_widget(self.label_1)
+            self.txt_input3 = TextInput(text='', size_hint=(1, None),multiline=False)
+            self.input_layout.add_widget(self.txt_input3)
+            self.txt_input4 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
+            self.input_layout.add_widget(self.txt_input4)
         
         
     def update_dick(self,*args):
         self.players_dick.update({self.txt_input1.text:int(self.txt_input2.text), self.txt_input3.text:int(self.txt_input4.text)})
         
-    def new_teams(self,*args):    
-        self.players_dick = {}
-        self.remove_widget(self.output_page_layout)
+    def new_teams(self,*args): 
+        #print(self.current_page)   
+        if self.current_page == 'output':
+            self.players_dick = {}
+            self.remove_widget(self.output_page_layout)
+            self.input_page()
+        else:
+            popup_btn = Button(text="Already making teams \n\n Click anywhere to close")
+            popup = Popup(title='Error', content=popup_btn)
+            popup_btn.bind(on_press= popup.dismiss)
+            popup.open()
         
     def make_teams(self,*args):
         self.update_dick()
-        game = Players(self.players_dick)
-        self.game_list = game.team_maker()
-        self.remove_widget(self.input_page_layout)
-        self.put_names()
-        
-        print(self.game_list)
+        print(self.players_dick)
+        popup_btn = Button(text="Error not able to show teams \n\n Click anywhere to close")
+        popup = Popup(title='Error', content=popup_btn)
+        popup_btn.bind(on_press= popup.dismiss)
+            
+        for i in self.players_dick.values():
+            if i == '':
+                popup.open()
+                return -1
+        for i in self.players_dick.keys():
+            if i == '':
+                popup.open()
+                del self.players_dick[i]
+                return -1
+            
+        if len(self.players_dick) !=1  and self.current_page != 'output':
+            #self.update_dick()
+            game = Players(self.players_dick)
+            self.game_list = game.team_maker()
+            self.remove_widget(self.input_page_layout)
+            self.put_names()
+            print(self.game_list)
+        else:
+            popup.open()
+            #self.players_dick = {}
+            
         return self.game_list
     
     def put_names(self,*args):
         self.output_page_layout = BoxLayout(orientation= 'vertical')
-        
+        self.current_page = 'output'
         self.output_layout = GridLayout(cols=2, size_hint_y=None)
         self.output_scroll = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))   
         
@@ -122,7 +164,7 @@ class MainScreen(Screen):
         self.team1 = self.game_list[0]
         self.team2 = self.game_list[1]
         n = max(len(self.team2), len(self.team1))
-            
+        
         for i in range(n):
             if self.game_list[0][i] == 'Name':
                 lbl = Label(text='', size_hint=(1,None))
