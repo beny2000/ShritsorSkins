@@ -19,9 +19,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from algorthim import Players
 
-
-
-
 class MainScreen(Screen):
     """ The Main Screen of the app where the names are inputed and teams are outputed
 
@@ -260,18 +257,24 @@ class MainScreen(Screen):
         
         
 class HelpScreen(Screen):
-    '''help screen, displays help information for user and author info'''
-    pass # see kivy language below, for content
+        help_text =' Welcome to Shirts or Skins Help Menu \n In the textboxes label name, you would type the name of the player and in the textbox with the number 0 in it you would put that players skill. If more player are to be add plase mare sure to fill in the previous box before adding new players. Once all the name and respective skils are inputted you can tap on the view team button which will display the teams. If you would like to make new teams, tapping on the make new teams button will bring you  back to where you can input the players again. If anything is inputted incorrectly or any unallowed buttons are tapped the app will display and error message. If this occurs check to make sure that you did not leave any fields blank or that you did not tap a button that wants to bring to a page that your already on.\n Please report crashes to ben.morgenstern8@gmail.com. With you phone model, android version,what you where doing before the crash. \n\n Creators: Ben Morgenstern & Yasha Bershtatd \n Made with Kivy 1.9.0'
 
-Builder.load_string("""            
+Builder.load_string("""   
 <HelpScreen>
     BoxLayout:
         id: help_layout
         orientation: 'vertical'
         
         Label:
-            text: '*some help text*'
-            
+            text_size: self.width, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+            text: root.help_text
+            padding_x: 10
+        
+        Label:
+            text: ''
+            size_hint: (0.7,None)
         Button:
             id: back
             size_hint: (1, None)
