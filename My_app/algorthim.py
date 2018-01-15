@@ -5,6 +5,7 @@ import math
 
 class Players():
     '''
+    Creates teams
     
     Attributes:
         names: dictonry of names and their respectivy skills
@@ -17,9 +18,17 @@ class Players():
     def __init__(self,names):
         '''initizes atrributes '''
         self.names = names
+        print(self.names)
         self.fairness_rating = 100
         self.team2_skill = 0
         self.team1_skill = 0
+        for i in self.names:
+            if self.names[i] == 'Skill':
+                
+                self.names[i] = int(0)
+            else:
+                self.names[i] = int(names[i])
+        print(self.names)
 
 
     def __fairness(self,teams):
@@ -90,3 +99,4 @@ class Players():
         game.append(team2) 
          
         return game
+        print(game)

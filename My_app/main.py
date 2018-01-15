@@ -1,4 +1,9 @@
 '''
+version 5.5
+Created by Ben Morgenstern and Yasha Bershtatd
+Published to play store on January 7, 2018
+App URL : https://play.google.com/store/apps/details?id=shirtsorskins.my_app&rdid=shirtsorskins.my_app
+
 Glossary of Terms:
 bind: when and object is binded to a method via a action, means that when the action occurs to the object the method is called. ie
 layout: the GUI structure in which the widgets are added to in order to displayed them in a organised way
@@ -46,17 +51,18 @@ class MainScreen(Screen):
         ''' method adds all relvent items(widgets) to screen, needed for the inputing of names, hence input page'''
         self.current_page = 'input'
 
-        #creates layout scructure for widgets
+        #creates layout structure for widgets
         self.input_page_layout = BoxLayout(orientation= 'vertical') #main layout
         self.input_layout = GridLayout(cols=5, size_hint_y=None)#layout for input widgets
         self.input_scroll = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
         
         #creates text input widgets
+        
         self.name_input1 = TextInput(text='Name', size_hint=(1, None),multiline=False) 
-        self.skill_input1 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
+        self.skill_input1 = TextInput(text='Skill', size_hint=(1, None),multiline=False, input_filter= 'int')
         self.separator = Label(text='', size_hint=(0.2, None))
         self.name_input2 = TextInput(text='Name', size_hint=(1, None),multiline=False)
-        self.skill_input2 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
+        self.skill_input2 = TextInput(text='Skill', size_hint=(1, None),multiline=False, input_filter= 'int')
         
         #add widgets to layout for input widgets
         self.input_layout.add_widget(self.name_input1)
@@ -117,7 +123,7 @@ class MainScreen(Screen):
         popup_btn.bind(on_press= popup.dismiss)
             
         #make sure that the previous text widgets are not blank
-        #fix: skills can be blank
+        
         for i in self.players_dick.values():
             if i == '':
                 popup.open()#displays popup
@@ -129,29 +135,36 @@ class MainScreen(Screen):
                 del self.players_dick[i]
                 return -1
         else:
-            #creates text input widgets
-            self.name_input1 = TextInput(text='Name', size_hint=(1, None),multiline=False)
-            self.skill_input1 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
-            self.label_1 = Label(text='', size_hint=(1, None))
-            self.name_input2 = TextInput(text='Name', size_hint=(1, None),multiline=False)
-            self.skill_input2 = TextInput(text='0', size_hint=(1, None),multiline=False, input_filter= 'int')
-            
-            #adds widgets to text input layout
-            self.input_layout.add_widget(self.name_input1)
-            self.input_layout.add_widget(self.skill_input1)
-            self.input_layout.add_widget(self.label_1)
-            self.input_layout.add_widget(self.name_input2)
-            self.input_layout.add_widget(self.skill_input2)
+                
+            if len(self.players_dick) != 1 and (self.name_input1.text != 'Name' or self.name_input2.text != 'Name'):    #creates text input widgets
+                self.name_input1 = TextInput(text='Name', size_hint=(1, None),multiline=False)
+                self.skill_input1 = TextInput(text='Skill', size_hint=(1, None),multiline=False, input_filter= 'int')
+                self.label_1 = Label(text='', size_hint=(1, None))
+                self.name_input2 = TextInput(text='Name', size_hint=(1, None),multiline=False)
+                self.skill_input2 = TextInput(text='Skill', size_hint=(1, None),multiline=False, input_filter= 'int')
+                    
+                    #adds widgets to text input layout
+                self.input_layout.add_widget(self.name_input1)
+                self.input_layout.add_widget(self.skill_input1)
+                self.input_layout.add_widget(self.label_1)
+                self.input_layout.add_widget(self.name_input2)
+                self.input_layout.add_widget(self.skill_input2)
+            else:
+                popup_btn = Button(text="Error unable to add new players \n\n Click anywhere to close")
+                popup = Popup(title='Error', content=popup_btn)
+                popup_btn.bind(on_press= popup.dismiss)
+                popup.open()
+                
             
             
     def update_dick(self,*args):
         '''method updates the dictonary of names and skills, with the text from the text input widgets'''
         
-        if self.skill_input1.text != '' and self.skill_input2.text != '' :
-            self.players_dick.update({self.name_input1.text:int(self.skill_input1.text), self.name_input2.text:int(self.skill_input2.text)})
+        if self.skill_input1.text != '' and self.skill_input2.text != '':
+            self.players_dick.update({self.name_input1.text:self.skill_input1.text, self.name_input2.text:self.skill_input2.text})
         else:
             self.players_dick = {}
-            popup_btn = Button(text="Already making teams \n\n Click anywhere to close")
+            popup_btn = Button(text="Error unable to make teams \n\n Click anywhere to close")
             popup = Popup(title='Error', content=popup_btn)
             popup_btn.bind(on_press= popup.dismiss)
             popup.open()
@@ -178,7 +191,7 @@ class MainScreen(Screen):
         #print(self.players_dick)
         
         #creats pop up if error ocurrs
-        popup_btn = Button(text="Error not able to show teams \n\n Click anywhere to close")
+        popup_btn = Button(text="Error unable to display teams \n\n Click anywhere to close")
         popup = Popup(title='Error', content=popup_btn)
         popup_btn.bind(on_press= popup.dismiss)
         
@@ -257,7 +270,7 @@ class MainScreen(Screen):
         
         
 class HelpScreen(Screen):
-        help_text =' Welcome to Shirts or Skins Help Menu \n In the textboxes label name, you would type the name of the player and in the textbox with the number 0 in it you would put that players skill. If more player are to be add plase mare sure to fill in the previous box before adding new players. Once all the name and respective skils are inputted you can tap on the view team button which will display the teams. If you would like to make new teams, tapping on the make new teams button will bring you  back to where you can input the players again. If anything is inputted incorrectly or any unallowed buttons are tapped the app will display and error message. If this occurs check to make sure that you did not leave any fields blank or that you did not tap a button that wants to bring to a page that your already on.\n Please report crashes to ben.morgenstern8@gmail.com. With you phone model, android version,what you where doing before the crash. \n\n Creators: Ben Morgenstern & Yasha Bershtatd \n Made with Kivy 1.9.0'
+        help_text =' Welcome to Shirts or Skins Help Menu \n In the textboxes label Name, you would type the name of the player and in the textbox label Skill, you would put that players skill. If more player are to be added please mare sure to fill in the previous box before adding new players. Once all the name and respective skills are inputed you can tap on the view team button which will display the teams. If you would like to make new teams, tapping on the make new teams button will bring you  back to where you can input the players again. If anything is inputed incorrectly or any unallowed buttons are tapped the app will display and error message. If this occurs check to make sure that you did not leave any fields blank or that you did not tap a button that wants to bring to a page that your already on. Please report crashes to ben.morgenstern8@gmail.com. With you phone model, android version, what you where doing before the crash. \n\n Creators: Ben Morgenstern & Yasha Bershtatd \n Made with Kivy 1.9.1'
 
 Builder.load_string("""   
 <HelpScreen>
