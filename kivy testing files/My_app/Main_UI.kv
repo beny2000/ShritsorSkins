@@ -1,0 +1,21 @@
+<InputScreen>:
+    BoxLayout:
+        Button:
+            text: 'Goto settings'
+            size: (100,100)
+            size_hint: (None, None)
+            on_press: root.manager.current = 'output'
+            
+        Button:
+            text: 'Add New Players'
+            size: (100,100)
+            size_hint: (None, None)
+            on_press: self.new_players
+
+<OutputScreen>:
+    BoxLayout:
+        Button:
+            size: (100,100)
+            size_hint: (None, None)
+            text: 'Back to menu'
+            on_press: root.manager.current = 'input'
